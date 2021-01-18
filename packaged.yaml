@@ -146,7 +146,7 @@ Resources:
               S3Key:
                 Rules:
                 - Name: suffix
-                  Value: .pdf
+                  Value: .jpg
   CreateProject:
     Type: AWS::Serverless::Function
     Properties:
