@@ -12,7 +12,21 @@ Parameters:
     Description: (Required) The stack name of the Amplify backend deployment.
   BucketName:
     Type: String
-    Description: (Required) A universally unique name for the user file bucket. Must be all lowercase. 
+    Description: (Required) A universally unique name for the user file bucket. Must
+      be all lowercase.
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: serverless-backend
+    Description: serverless-backend
+    Author: user1
+    SpdxLicenseId: Apache-2.0
+    LicenseUrl: s3://sam-artifiacts/d41d8cd98f00b204e9800998ecf8427e
+    ReadmeUrl: s3://sam-artifiacts/d41d8cd98f00b204e9800998ecf8427e
+    Labels:
+    - tests
+    HomePageUrl: https://github.com/saketh-linux/serverless-backend.git
+    SemanticVersion: '0.0.1'
+    SourceCodeUrl: https://github.com/saketh-linux/serverless-backend.git
 Globals:
   Api:
     Cors:
@@ -63,7 +77,7 @@ Resources:
     Properties:
       Handler: app.handler
       Runtime: python3.8
-      CodeUri: s3://iot-test-mo/1087ee92f67613c0826d5dc82031a13a
+      CodeUri: s3://sam-artifiacts/318f1f9ef9d1f67b103984709dadba49
       Layers:
       - Ref: FPDFLayer
       Policies:
@@ -87,7 +101,7 @@ Resources:
     Properties:
       LayerName: document-scanner-dependencies
       Description: Dependencies for Document Scanner GeneratePDF function
-      ContentUri: s3://iot-test-mo/b8df6ea31736a54df0f8488ba9946a96
+      ContentUri: s3://sam-artifiacts/0c4b1f6da66a7a67900a5ef60375211e
       CompatibleRuntimes:
       - python3.8
       LicenseInfo: MIT
@@ -97,7 +111,7 @@ Resources:
     Properties:
       Handler: app.handler
       Runtime: python3.8
-      CodeUri: s3://iot-test-mo/25b66df61e4cdb6aa7f5f32432c1a90f
+      CodeUri: s3://sam-artifiacts/1baa401a4b0157e37b92f05461ba6508
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -122,12 +136,23 @@ Resources:
                 Rules:
                 - Name: suffix
                   Value: .png
+        S3EventUpload:
+          Type: S3
+          Properties:
+            Bucket:
+              Ref: UserFileBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                - Name: suffix
+                  Value: .pdf
   CreateProject:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.handler
       Runtime: python3.8
-      CodeUri: s3://iot-test-mo/25d78b87ad3d6cfe804dddbcc91cd07a
+      CodeUri: s3://sam-artifiacts/c3c9f75ca829e852cbc39c3700bec5fa
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -149,7 +174,7 @@ Resources:
     Properties:
       Handler: app.handler
       Runtime: python3.8
-      CodeUri: s3://iot-test-mo/169f0e4c049252b59817483614792f18
+      CodeUri: s3://sam-artifiacts/b376437a9aa46a39e274b415cae86b2b
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -171,7 +196,7 @@ Resources:
     Properties:
       Handler: app.handler
       Runtime: python3.8
-      CodeUri: s3://iot-test-mo/a54237731a225988f293bffeed90037f
+      CodeUri: s3://sam-artifiacts/8583053e0e20e85cf07a938ac219f34e
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
@@ -203,7 +228,7 @@ Resources:
     Properties:
       Handler: app.handler
       Runtime: python3.8
-      CodeUri: s3://iot-test-mo/4e9b09496e9f3178dec669337071468a
+      CodeUri: s3://sam-artifiacts/11e15a3e88be7333b2469afe2ce969b6
       Policies:
       - DynamoDBCrudPolicy:
           TableName:

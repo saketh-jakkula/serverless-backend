@@ -16,6 +16,19 @@ Parameters:
   BucketName:
     Type: String
     Description: (Required) A universally unique name for the user file bucket. Must be all lowercase. 
+    
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: serverless-backend
+    Description: serverless-backend
+    Author: user1
+    SpdxLicenseId: Apache-2.0
+    LicenseUrl: LICENSE.txt
+    ReadmeUrl: README.md
+    Labels: ['tests']
+    HomePageUrl: https://github.com/saketh-linux/serverless-backend.git
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/saketh-linux/serverless-backend.git
 
 
 Globals:
@@ -124,6 +137,16 @@ Resources:
                 Rules:
                 - Name: suffix
                   Value: ".png"
+        S3EventUpload:
+          Type: S3
+          Properties:
+            Bucket: !Ref UserFileBucket
+            Events: "s3:ObjectCreated:*"
+            Filter:
+              S3Key:
+                Rules:
+                - Name: suffix
+                  Value: ".jpg"      
 
   CreateProject:
     Type: AWS::Serverless::Function
